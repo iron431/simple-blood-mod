@@ -25,4 +25,5 @@ public class ParticleRegistry {
     public static final Supplier<SimpleParticleType> BLOOD_SPURT_2 = PARTICLE_TYPES.register("blood_spurt_2", () -> new SimpleParticleType(false));
     public static final Supplier<SimpleParticleType> BLOOD_SWIPE_1 = PARTICLE_TYPES.register("blood_swipe_1", () -> new SimpleParticleType(false));
     public static final Supplier<SimpleParticleType> BLOOD_SWIPE_2 = PARTICLE_TYPES.register("blood_swipe_2", () -> new SimpleParticleType(false));
+    public static final Supplier<SimpleParticleType> BLOOD_EMITTER = PARTICLE_TYPES.register("blood_emitter", () -> new SimpleParticleType(false));
 }

@@ -30,14 +30,14 @@ public class BloodGroundParticle extends TextureSheetParticle {
     private static final Vector3f TRANSFORM_VECTOR = new Vector3f(-1.0F, -1.0F, 0.0F);
     private static final float DEGREES_90 = Mth.PI / 2f;
 
-    public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, double xd, double yd, double zd) {
+    public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, double scale, double yd, double zd) {
 
-        super(level, xCoord, yCoord, zCoord, xd, yd, zd);
+        super(level, xCoord, yCoord, zCoord, 0.0D, yd, zd);
 
-        this.xd = xd;
+        this.xd = 0.0D;
         this.yd = yd;
         this.zd = zd;
-        this.quadSize = 1f + (float) Math.random() * 0.75f;
+        this.quadSize = (1f + (float) Math.random() * 0.75f) * readScale(scale);
         this.lifetime = 200 + (int) (Math.random() * 200);
         this.gravity = 1.0F;
         this.pickSprite(spriteSet);
@@ -47,16 +47,13 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.bCol = ParticleRegistry.BLOOD_COLOR.z;
     }
 
+    private static float readScale(double scale) {
+        return scale > 0.0D ? (float) scale : 1.0F;
+    }
 
     @Override
     public void render(VertexConsumer buffer, Camera camera, float partialTick) {
         this.alpha = 1.0F - Mth.clamp(((float) this.age + partialTick - 90) / (float) this.lifetime, 0.2F, .7F);
-//backface
-//        this.renderRotatedParticle(buffer, camera, partialTick, (quat) -> {
-//            quat.mul(Axis.YP.rotation(0));
-//            quat.mul(Axis.XP.rotation(-DEGREES_90));
-//        });
-        //frontface (up)
         float quadSize = this.getQuadSize(partialTick);
         if (this.age + partialTick <= SPLAT_IN_TIME) {
             quadSize *= (this.age + partialTick) / (SPLAT_IN_TIME * 2f) + .5f;

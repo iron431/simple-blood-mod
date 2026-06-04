@@ -48,7 +48,7 @@ public class BloodParticle extends TextureSheetParticle {
         super.tick();
         if (this.onGround) {
             Vec3 groundLevel = level.clip(new ClipContext(this.getPos().add(0, 0.6, 0), this.getPos(), VISUAL, NONE, CollisionContext.empty())).getLocation();
-            this.level.addParticle(ParticleRegistry.BLOOD_GROUND_PARTICLE.get(), groundLevel.x, groundLevel.y, groundLevel.z, 0.0D, 0.0D, 0.0D);
+            this.level.addParticle(ParticleRegistry.BLOOD_GROUND_PARTICLE.get(), groundLevel.x, groundLevel.y, groundLevel.z, this.getQuadSize(0.0F), 0.0D, 0.0D);
             this.remove();
         }
     }
