@@ -29,6 +29,8 @@ public class BloodGroundParticle extends TextureSheetParticle {
     private static final Vector3f ROTATION_VECTOR = Util.make(new Vector3f(0.5F, 0.5F, 0.5F), Vector3f::normalize);
     private static final Vector3f TRANSFORM_VECTOR = new Vector3f(-1.0F, -1.0F, 0.0F);
     private static final float DEGREES_90 = Mth.PI / 2f;
+    private static final int FADEOUT_BUFFER = 20;
+    private final int fadeoutTime;
 
     public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, double scale, double yd, double zd) {
 
@@ -38,7 +40,8 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.yd = yd;
         this.zd = zd;
         this.quadSize = (1.5f + (float) Math.random() * 0.25f) * readScale(scale);
-        this.lifetime = 200 + (int) (Math.random() * 200);
+        this.fadeoutTime = 100 + (int) (Math.random() * 50);
+        this.lifetime = 300 + fadeoutTime;
         this.gravity = 1.0F;
         this.pickSprite(spriteSet);
 
@@ -53,10 +56,15 @@ public class BloodGroundParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer buffer, Camera camera, float partialTick) {
-        this.alpha = 1.0F - Mth.clamp(((float) this.age + partialTick - 90) / (float) this.lifetime, 0.2F, .7F);
+        int fadeThreshold = lifetime - fadeoutTime;
         float quadSize = this.getQuadSize(partialTick);
-        if (this.age + partialTick <= SPLAT_IN_TIME) {
-            quadSize *= (this.age + partialTick) / (SPLAT_IN_TIME * 2f) + .5f;
+        float f = this.age + partialTick;
+        if (f <= SPLAT_IN_TIME) {
+            quadSize *= (f) / (SPLAT_IN_TIME * 2f) + .5f;
+        }
+        if (f > fadeThreshold) {
+            quadSize *= 1 - Math.max(f - fadeThreshold - 60, 0) / fadeoutTime;
+            this.alpha = 1.0F - Mth.clamp((f - fadeThreshold) / fadeoutTime, 0.2F, 1F);
         }
         this.renderRotatedParticle(buffer, camera, partialTick, quadSize, (quat) -> {
             quat.mul(Axis.YP.rotation(-(float) Math.PI));
@@ -157,7 +165,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
                 continue;
             }
             float drop = (float) (centerY - surfaceTopY);
-            float alphaMultiplier = Mth.lerp( Mth.clamp(drop / MAX_PROJECTION_HEIGHT, 0.0F, 1.0F), 1.0F, 0.25F);
+            float alphaMultiplier = Mth.lerp(Mth.clamp(drop / MAX_PROJECTION_HEIGHT, 0.0F, 1.0F), 1.0F, 0.25F);
             if (this.renderBlockDecal(
                     buffer,
                     camera,

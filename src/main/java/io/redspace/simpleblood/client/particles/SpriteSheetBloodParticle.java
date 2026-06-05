@@ -23,6 +23,7 @@ public class SpriteSheetBloodParticle extends BloodParticle {
             double z,
             SpriteSet spriteSet,
             int frameCount,
+            int textureSize,
             double xd,
             double yd,
             double zd
@@ -30,7 +31,7 @@ public class SpriteSheetBloodParticle extends BloodParticle {
         super(level, x, y, z, spriteSet, xd, yd, zd);
         this.frameCount = frameCount;
         this.setSprite(spriteSet.get(0, 1));
-        this.quadSize *= 2; // higher resolution sprites
+        this.quadSize *= textureSize / 16f;
     }
 
     private float animPercent(int offset) {
@@ -55,10 +56,12 @@ public class SpriteSheetBloodParticle extends BloodParticle {
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
         private final int frameCount;
+        private final int textureSize;
 
-        public Provider(SpriteSet sprites, int frameCount) {
+        public Provider(SpriteSet sprites, int frameCount, int textureSize) {
             this.sprites = sprites;
             this.frameCount = frameCount;
+            this.textureSize = textureSize;
         }
 
         @Override
@@ -72,7 +75,7 @@ public class SpriteSheetBloodParticle extends BloodParticle {
                 double dy,
                 double dz
         ) {
-            return new SpriteSheetBloodParticle(level, x, y, z, this.sprites, this.frameCount, dx, dy, dz);
+            return new SpriteSheetBloodParticle(level, x, y, z, this.sprites, this.frameCount, this.textureSize, dx, dy, dz);
         }
     }
 }
