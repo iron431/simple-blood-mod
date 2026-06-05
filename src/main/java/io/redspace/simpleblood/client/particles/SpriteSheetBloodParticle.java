@@ -14,7 +14,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SpriteSheetBloodParticle extends BloodParticle {
     private final int frameCount;
-    private static final int TICKS_PER_FRAME = 2;
+    private static final int TICKS_PER_FRAME = 3;
 
     public SpriteSheetBloodParticle(
             ClientLevel level,

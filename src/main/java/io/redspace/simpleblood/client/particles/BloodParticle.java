@@ -25,12 +25,12 @@ public class BloodParticle extends TextureSheetParticle {
         super(level, xCoord, yCoord, zCoord, xd, yd, zd);
 
         this.xd = xd;
-        this.yd = yd * 2 + .05f;
+        this.yd = yd * 1.5 + .15f;
         this.zd = zd;
         this.quadSize *= 1f + (float) Math.random();
         this.scale(2.5f);
-        this.lifetime = 30 + (int) (Math.random() * 10);
-        this.gravity = 1.0F;
+        this.lifetime = 100 + (int) (Math.random() * 40);
+        this.gravity = 1.5F;
         this.pickSprite(spriteSet);
 
         this.rCol = ParticleRegistry.BLOOD_COLOR.x;
@@ -48,7 +48,7 @@ public class BloodParticle extends TextureSheetParticle {
         super.tick();
         if (this.onGround) {
             Vec3 groundLevel = level.clip(new ClipContext(this.getPos().add(0, 0.6, 0), this.getPos(), VISUAL, NONE, CollisionContext.empty())).getLocation();
-            this.level.addParticle(ParticleRegistry.BLOOD_GROUND_PARTICLE.get(), groundLevel.x, groundLevel.y, groundLevel.z, this.getQuadSize(0.0F), 0.0D, 0.0D);
+            this.level.addParticle(ParticleRegistry.BLOOD_GROUND_PARTICLE.get(), true, groundLevel.x, groundLevel.y, groundLevel.z, this.getQuadSize(0.0F), 0.0D, 0.0D);
             this.remove();
         }
     }

@@ -37,7 +37,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.xd = 0.0D;
         this.yd = yd;
         this.zd = zd;
-        this.quadSize = (1f + (float) Math.random() * 0.75f) * readScale(scale);
+        this.quadSize = (1.5f + (float) Math.random() * 0.25f) * readScale(scale);
         this.lifetime = 200 + (int) (Math.random() * 200);
         this.gravity = 1.0F;
         this.pickSprite(spriteSet);
@@ -146,7 +146,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
                 continue;
             }
 
-            VoxelShape shape = blockState.getCollisionShape(this.level, surfacePos);
+            VoxelShape shape = blockState.getShape(this.level, surfacePos);
             if (shape.isEmpty()) {
                 continue;
             }

@@ -1,7 +1,13 @@
 {
   "replace": false,
   "values": [
+    "minecraft:witch",
+    "minecraft:pillager",
+    "minecraft:ravager",
+    "minecraft:evoker",
+    "minecraft:vindicator",
     "minecraft:zombie",
-    "minecraft:husk"
+    "minecraft:husk",
+    "minecraft:player"
   ]
 }
