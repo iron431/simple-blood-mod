@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
     private static final int FADEOUT_BUFFER = 20;
     private static final float INITIAL_ALPHA = 0.7f;
     private final int fadeoutTime;
+    private final float yawRotation;
 
     public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, int color, double scale, double yd, double zd) {
 
@@ -37,7 +39,8 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.xd = 0.0D;
         this.yd = yd;
         this.zd = zd;
-        this.quadSize = (1.5f + (float) Math.random() * 0.25f) * readScale(scale);
+        this.quadSize = (1.5f /*+ (float) Math.random() * 0.25f*/) * (float) scale;
+        this.yawRotation = this.random.nextInt(4) * DEGREES_90;
         this.fadeoutTime = 150;
         this.lifetime = 200 + fadeoutTime + (int) (Math.random() * 150);
         this.gravity = 1.0F;
@@ -47,10 +50,6 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.gCol = BloodParticleOptions.green(color);
         this.bCol = BloodParticleOptions.blue(color);
         this.alpha = INITIAL_ALPHA;
-    }
-
-    private static float readScale(double scale) {
-        return scale > 0.0D ? (float) scale : 1.0F;
     }
 
     @Override
@@ -233,11 +232,15 @@ public class BloodGroundParticle extends TextureSheetParticle {
                 new Vec2(maxX, minZ),
         };
 
+        float cosYaw = Mth.cos(this.yawRotation);
+        float sinYaw = Mth.sin(this.yawRotation);
         for (Vec2 corner : corners) {
             float offsetX = corner.x - (float) centerX;
             float offsetZ = corner.y - (float) centerZ;
-            float u = (offsetX / (2.0F * halfSize) + 0.5F) * (u1 - u0) + u0;
-            float v = (offsetZ / (2.0F * halfSize) + 0.5F) * (v1 - v0) + v0;
+            float localX = offsetX * cosYaw - offsetZ * sinYaw;
+            float localZ = offsetX * sinYaw + offsetZ * cosYaw;
+            float u = (localX / (2.0F * halfSize) + 0.5F) * (u1 - u0) + u0;
+            float v = (localZ / (2.0F * halfSize) + 0.5F) * (v1 - v0) + v0;
             this.makeCornerVertex(
                     buffer,
                     new Vector3f(
