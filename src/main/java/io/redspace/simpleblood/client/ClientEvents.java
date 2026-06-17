@@ -7,12 +7,17 @@ import io.redspace.simpleblood.client.particles.SpriteSheetBloodParticle;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
+    @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         List<BloodEmitterParticle.VariantFactory> variants = new ArrayList<>();
 

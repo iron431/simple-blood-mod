@@ -22,7 +22,6 @@ public class IronsSimpleBloodMod {
 
     public IronsSimpleBloodMod(IEventBus modEventBus, ModContainer modContainer) {
         ParticleRegistry.register(modEventBus);
-        modEventBus.addListener(ClientEvents::registerParticles);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC, String.format("%s-client.toml", IronsSimpleBloodMod.MODID));
     }
 }
