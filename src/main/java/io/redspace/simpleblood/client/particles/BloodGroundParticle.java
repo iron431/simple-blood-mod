@@ -1,5 +1,6 @@
 package io.redspace.simpleblood.client.particles;
 
+import io.redspace.simpleblood.client.ClientConfig;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
@@ -42,7 +43,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
         this.quadSize = (1.5f /*+ (float) Math.random() * 0.25f*/) * (float) scale;
         this.yawRotation = this.random.nextInt(4) * DEGREES_90;
         this.fadeoutTime = 150;
-        this.lifetime = 200 + fadeoutTime + (int) (Math.random() * 150);
+        this.lifetime = (int) ((200 + fadeoutTime + (Math.random() * 150)) * ClientConfig.GROUND_DECAL_DURATION_MULTIPLIER.get());
         this.gravity = 1.0F;
         this.pickSprite(spriteSet);
 

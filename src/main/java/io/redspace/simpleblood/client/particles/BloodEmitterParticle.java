@@ -1,5 +1,6 @@
 package io.redspace.simpleblood.client.particles;
 
+import io.redspace.simpleblood.client.ClientConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -38,6 +39,9 @@ public final class BloodEmitterParticle {
                 double dy,
                 double dz
         ) {
+            if (options.isGraphic() && !ClientConfig.ALLOW_GRAPHIC_PARTICLES.get()) {
+                return null;
+            }
             return variants.get(level.random.nextInt(variants.size()))
                     .create(options, level, x, y, z, dx, dy, dz);
         }

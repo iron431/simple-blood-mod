@@ -1,5 +1,6 @@
 package io.redspace.simpleblood.client.particles;
 
+import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
@@ -28,11 +29,12 @@ public class SpriteSheetBloodParticle extends BloodParticle {
             DecalType decalType,
             DecalDirection decalDirection,
             int color,
+            float scale,
             double xd,
             double yd,
             double zd
     ) {
-        super(level, x, y, z, spriteSet, decalType, decalDirection, color, xd, yd, zd);
+        super(level, x, y, z, spriteSet, decalType, decalDirection, color, scale, xd, yd, zd);
         this.frameCount = frameCount;
         this.setSprite(spriteSet.get(0, 1));
         this.quadSize *= textureSize / 16f;
@@ -83,18 +85,19 @@ public class SpriteSheetBloodParticle extends BloodParticle {
                 double dy,
                 double dz
         ) {
-            return create(level, x, y, z, ParticleRegistry.DEFAULT_BLOOD_COLOR, dx, dy, dz);
+            return new SpriteSheetBloodParticle(
+                    level, x, y, z, this.sprites, this.frameCount, this.textureSize, this.decalType, this.decalDirection,
+                    ParticleRegistry.DEFAULT_BLOOD_COLOR, 1f, dx, dy, dz
+            );
         }
 
         @Override
         public Particle create(BloodParticleOptions options, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return create(level, x, y, z, options.color(), dx, dy, dz);
-        }
-
-        private Particle create(ClientLevel level, double x, double y, double z, int color, double dx, double dy, double dz) {
             return new SpriteSheetBloodParticle(
-                    level, x, y, z, this.sprites, this.frameCount, this.textureSize, this.decalType, this.decalDirection, color, dx, dy, dz
+                    level, x, y, z, this.sprites, this.frameCount, this.textureSize, this.decalType, this.decalDirection,
+                    options.color(), options.scale(), dx, dy, dz
             );
         }
+
     }
 }

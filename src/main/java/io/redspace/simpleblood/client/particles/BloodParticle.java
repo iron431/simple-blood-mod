@@ -1,6 +1,7 @@
 package io.redspace.simpleblood.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
@@ -38,13 +39,12 @@ public class BloodParticle extends TextureSheetParticle {
             DecalType decalType,
             DecalDirection decalDirection,
             int color,
+            float scale,
             double xd,
             double yd,
             double zd
     ) {
-
         super(level, xCoord, yCoord, zCoord, xd, yd, zd);
-
         this.decalType = decalType;
         this.decalDirection = decalDirection;
         this.color = color;
@@ -52,7 +52,7 @@ public class BloodParticle extends TextureSheetParticle {
         this.yd = yd * 1.5 + .15f;
         this.zd = zd;
         this.quadSize *= 1f + (float) Math.random();
-        this.scale(2.5f);
+        this.scale(scale * 2.5f);
         this.lifetime = 100 + (int) (Math.random() * 40);
         this.gravity = 1.5F;
         this.pickSprite(spriteSet);
@@ -63,7 +63,7 @@ public class BloodParticle extends TextureSheetParticle {
 
         this.scaleTransition = 1f + (float) Math.random();
         this.mirrored = level.random.nextBoolean();
-        if( !level.getFluidState(BlockPos.containing(x, y, z)).isEmpty()){
+        if (!level.getFluidState(BlockPos.containing(x, y, z)).isEmpty()) {
             this.underwater = true;
             this.xd *= 0.5f;
             this.yd *= 0.5f;
@@ -184,16 +184,12 @@ public class BloodParticle extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level,
                                        double x, double y, double z,
                                        double dx, double dy, double dz) {
-            return create(level, x, y, z, ParticleRegistry.DEFAULT_BLOOD_COLOR, dx, dy, dz);
+            return new BloodParticle(level, x, y, z, this.sprites, this.decalType, this.decalDirection, ParticleRegistry.DEFAULT_BLOOD_COLOR, 1f, dx, dy, dz);
         }
 
         @Override
         public Particle create(BloodParticleOptions options, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return create(level, x, y, z, options.color(), dx, dy, dz);
-        }
-
-        private Particle create(ClientLevel level, double x, double y, double z, int color, double dx, double dy, double dz) {
-            return new BloodParticle(level, x, y, z, this.sprites, this.decalType, this.decalDirection, color, dx, dy, dz);
+            return new BloodParticle(level, x, y, z, this.sprites, this.decalType, this.decalDirection, options.color(), options.scale(), dx, dy, dz);
         }
     }
 }

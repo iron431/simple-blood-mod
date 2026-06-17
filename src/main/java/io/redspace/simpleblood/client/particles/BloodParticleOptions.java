@@ -10,16 +10,26 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record BloodParticleOptions(int color) implements ParticleOptions {
+public record BloodParticleOptions(int color, float scale, boolean isGraphic) implements ParticleOptions {
+    public BloodParticleOptions(int color) {
+        this(color, 1f, true);
+    }
+
     public static final MapCodec<BloodParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    Codec.INT.fieldOf("color").forGetter(BloodParticleOptions::color)
+                    Codec.INT.fieldOf("color").forGetter(BloodParticleOptions::color),
+                    Codec.FLOAT.optionalFieldOf("scale", 2.5f).forGetter(BloodParticleOptions::scale),
+                    Codec.BOOL.optionalFieldOf("is_graphic", true).forGetter(BloodParticleOptions::isGraphic)
             ).apply(instance, BloodParticleOptions::new)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BloodParticleOptions> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             BloodParticleOptions::color,
+            ByteBufCodecs.FLOAT,
+            BloodParticleOptions::scale,
+            ByteBufCodecs.BOOL,
+            BloodParticleOptions::isGraphic,
             BloodParticleOptions::new
     );
 
