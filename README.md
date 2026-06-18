@@ -1,6 +1,4 @@
-![Minecraft: 1.20.1](https://img.shields.io/static/v1?label=&message=1.20.1&color=2d2d2d&labelColor=4e4e4e&style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjCGJ1kDAAACoElEQVQ4T22SeU8aURTF/ULGtNRWWVQY9lXABWldIDPIMgVbNgEVtaa0damiqGBdipXaJcY2ofEf4ycbTt97pVAabzK5b27u+Z377kwXgK77QthRy7OfXbeJM+ttqKSXN8sdwbT/A0L7elmsYqrPHZmROLPh5YkV4oEBwaKuHj+yyJptLDoAhbq3O1V1XCVObY3FL24mfn5oRPrcwSCRfQOyNWcjVjZdCbtcdwcgXrXUspdOKbDN/XE9tiBJMhXHT60gUIT2dMhcDLMc3NVKQklz0QIkf5qlyEcO6Qs7yPhMJB4amDMFimQSmqNlE8SKAZFzDfxHfVILIIZ10sJ3OwIbcqSuiOjchkzNCboHev9o2YhgiUP8mxnLN24I6/3ghYdtQG5iUMpFBuCP9iKwLsfiLyeCp2rMnZgwX3NArGoxW1Ridl+BzLEVKa8KSxOqNmDdz0kFnxaLHhWEgAyZigWhHXL+pEDy2ozsDxv8vAzTnh7w5kcghqCaFmCT10of4iPIT2mRdPUh4HoCcVwBH/8Ac2kzUkEV5r3EfVSOvbAJa5NDyI0r2oDtWb1EClh+OoC3Pg7v/Bw7p939yI4rsRW2Y3lKh01eh7WpIRyKZqzyjjYgPdIvlaMWRqYuG7wWryYHsRM0sFolZiPvQ3jheIwSmSBPdkByG/B6Wi3RYiVmRX7GiAPiUCRisii8D+jZNKvPBrHCW1GY0bAz6WkDCtOaSyKQFsi4K5NqNiZtehN2Y5uAShETqolhBqJXpfdPuPsuWwAaRdHSkxdc11mPqkGnyY4pyKbpl1GyJ0Pel7yqBoFcF3zqno5f+d8ohYy9Sx7lzQpxo1eirluCDgt++00p6uxttrG4F/A39sJGZWZMfrcp6O6+5kaVzXJHAOj6DeSs8qw5o8oxAAAAAElFTkSuQmCC)
-[<img alt="Mod Loader: Forge" src="https://img.shields.io/badge/loader-forge-1976d2?style=flat-square"/>](https://files.minecraftforge.net/)
-[<img alt="Curse Forge" src="https://cf.way2muchnoise.eu/927064.svg?badge_style=flat"/>](https://curseforge.com/minecraft/mc-mods/all-the-wizard-gear)
+[<img alt="Curse Forge" src="https://cf.way2muchnoise.eu/1579118.svg?badge_style=flat"/>](https://curseforge.com/minecraft/mc-mods/all-the-wizard-gear)
 
 <a href="https://discord.gg/TRzEdrndM2"><img src="https://img.shields.io/discord/1104430139275743293.svg?label=&amp;logo=discord&amp;logoColor=ffffff&amp;color=7389D8&amp;labelColor=6A7EC2&amp;style=for-the-badge" alt="" width="129" height="28" /></a>
 <!---
@@ -14,20 +12,12 @@
 If you love the mod and would like to help support its ongoing development, consider becoming a patron
 
 <a href="https://www.patreon.com/Iron431"><img src="https://shields.io/badge/-Patreon-f86754?style=for-the-badge&amp;logo=patreon&amp;logoColor=white" alt="" width="106" height="28" /></a>
-<a href="https://bmc.link/iron431"><img src="https://shields.io/badge/-Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&amp;logo=buymeacoffee&amp;logoColor=white" alt="" width="162" height="28" /></a>
 
 ## License & Use
-We reserve all rights. The points below outline what you can, cannot and must do when dealing with the
-contents of this repository.
+(MIT)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-### You CAN
-* Use this mod in a modpack.
-* Write your own code that uses this code as a dependency (such as addons or datapacks).
-* Submit Pull Requests to this repository.
-* Fork and modify the code as long as modifications are not distributed publicly.
-
-### You CANNOT
-* Redistribute mod files without permission.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software
 
 ### Disclaimer
 <sub> 
