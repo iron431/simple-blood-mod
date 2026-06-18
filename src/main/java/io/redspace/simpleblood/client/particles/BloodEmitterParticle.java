@@ -4,13 +4,12 @@ import io.redspace.simpleblood.client.ClientConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
+
 public final class BloodEmitterParticle {
     @FunctionalInterface
     public interface VariantFactory {
@@ -20,7 +19,7 @@ public final class BloodEmitterParticle {
     private BloodEmitterParticle() {
     }
 
-    @OnlyIn(Dist.CLIENT)
+
     public static class Provider implements ParticleProvider<BloodParticleOptions> {
         private final List<VariantFactory> variants;
 
@@ -29,21 +28,11 @@ public final class BloodEmitterParticle {
         }
 
         @Override
-        public Particle createParticle(
-                @NotNull BloodParticleOptions options,
-                ClientLevel level,
-                double x,
-                double y,
-                double z,
-                double dx,
-                double dy,
-                double dz
-        ) {
+        public Particle createParticle(@NotNull BloodParticleOptions options, ClientLevel level, double x, double y, double z, double dx, double dy, double dz, RandomSource random) {
             if (options.isGraphic() && !ClientConfig.ALLOW_GRAPHIC_PARTICLES.get()) {
                 return null;
             }
-            return variants.get(level.random.nextInt(variants.size()))
-                    .create(options, level, x, y, z, dx, dy, dz);
+            return variants.get(random.nextInt(variants.size())).create(options, level, x, y, z, dx, dy, dz);
         }
     }
 }

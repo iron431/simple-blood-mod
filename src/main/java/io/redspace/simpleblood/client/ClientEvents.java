@@ -1,5 +1,7 @@
 package io.redspace.simpleblood.client;
 
+import io.redspace.simpleblood.client.particles.BloodDecalParticleGroup;
+import io.redspace.simpleblood.client.particles.BloodDecalRenderState;
 import io.redspace.simpleblood.client.particles.BloodEmitterParticle;
 import io.redspace.simpleblood.client.particles.BloodGroundParticle;
 import io.redspace.simpleblood.client.particles.BloodParticle;
@@ -10,6 +12,7 @@ import io.redspace.simpleblood.registry.ParticleRegistry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterParticleGroupsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 import java.util.ArrayList;
@@ -17,6 +20,11 @@ import java.util.List;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
+    @SubscribeEvent
+    public static void registerParticleGroups(RegisterParticleGroupsEvent event) {
+        event.register(BloodDecalRenderState.TERRAIN_DECAL, BloodDecalParticleGroup::new);
+    }
+
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         List<BloodEmitterParticle.VariantFactory> variants = new ArrayList<>();

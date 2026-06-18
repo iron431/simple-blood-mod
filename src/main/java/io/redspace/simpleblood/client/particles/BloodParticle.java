@@ -1,28 +1,29 @@
 package io.redspace.simpleblood.client.particles;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import static net.minecraft.world.level.ClipContext.Block.*;
+import static net.minecraft.world.level.ClipContext.Block.VISUAL;
 import static net.minecraft.world.level.ClipContext.Fluid.NONE;
 
-public class BloodParticle extends TextureSheetParticle {
+
+public class BloodParticle extends SingleQuadParticle {
     private final DecalType decalType;
     private final DecalDirection decalDirection;
     private final int color;
@@ -44,7 +45,7 @@ public class BloodParticle extends TextureSheetParticle {
             double yd,
             double zd
     ) {
-        super(level, xCoord, yCoord, zCoord, xd, yd, zd);
+        super(level, xCoord, yCoord, zCoord, xd, yd, zd, spriteSet.first());
         this.decalType = decalType;
         this.decalDirection = decalDirection;
         this.color = color;
@@ -55,14 +56,14 @@ public class BloodParticle extends TextureSheetParticle {
         this.scale(scale * 2.5f);
         this.lifetime = 100 + (int) (Math.random() * 40);
         this.gravity = 1.5F;
-        this.pickSprite(spriteSet);
+        this.setSprite(spriteSet.get(this.random));
 
         this.rCol = BloodParticleOptions.red(color);
         this.gCol = BloodParticleOptions.green(color);
         this.bCol = BloodParticleOptions.blue(color);
 
         this.scaleTransition = 1f + (float) Math.random();
-        this.mirrored = level.random.nextBoolean();
+        this.mirrored = this.random.nextBoolean();
         if (!level.getFluidState(BlockPos.containing(x, y, z)).isEmpty()) {
             this.underwater = true;
             this.xd *= 0.5f;
@@ -90,7 +91,7 @@ public class BloodParticle extends TextureSheetParticle {
             if (alpha > 0.5) {
                 // prevent low-life underwater particles from emitting ground particle
                 Vec3 groundLevel = level.clip(new ClipContext(this.getPos().add(0, 0.6, 0), this.getPos(), VISUAL, NONE, CollisionContext.empty())).getLocation();
-                this.level.addParticle(new BloodGroundParticleOptions(this.color), true, groundLevel.x, groundLevel.y, groundLevel.z, this.getQuadSize(0.0F), 0.0D, 0.0D);
+                this.level.addParticle(new BloodGroundParticleOptions(this.color, this.getQuadSize(0.0F)), true, false, groundLevel.x, groundLevel.y, groundLevel.z, 0.0D, 0.0D, 0.0D);
             }
             this.remove();
         }
@@ -103,9 +104,15 @@ public class BloodParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer buffer, @NotNull Camera renderInfo, float partialTicks) {
+    protected SingleQuadParticle.Layer getLayer() {
+        return underwater ? SingleQuadParticle.Layer.TRANSLUCENT : SingleQuadParticle.Layer.OPAQUE;
+    }
+
+    @Override
+    public void extract(@NotNull QuadParticleRenderState renderState, @NotNull Camera camera, float partialTick) {
         if (this.decalDirection != DecalDirection.OMNIDIRECTIONAL) {
-            Vec3 left = new Vec3(renderInfo.getLeftVector());
+            Vector3fc lv = camera.leftVector();
+            Vec3 left = new Vec3(lv.x(), lv.y(), lv.z());
             Vec3 horizontalVelocity = new Vec3(xd, 0, zd);
             double dot = left.dot(horizontalVelocity.normalize());
             if (Math.abs(dot) > 0.1) {
@@ -121,54 +128,28 @@ public class BloodParticle extends TextureSheetParticle {
                 return;
             }
         }
-        super.render(buffer, renderInfo, partialTicks);
+        super.extract(renderState, camera, partialTick);
     }
 
     @Override
-    protected void renderRotatedQuad(@NotNull VertexConsumer buffer, @NotNull Quaternionf quaternion, float x, float y, float z, float partialTicks) {
-        float f = this.getQuadSize(partialTicks);
-        float f1 = this.getU0();
-        float f2 = this.getU1();
-        float f3 = this.getV0();
-        float f4 = this.getV1();
-        if (this.mirrored) {
-            float tmp = f1;
-            f1 = f2;
-            f2 = tmp;
-        }
-        int i = this.getLightColor(partialTicks);
-        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, f, f2, f4, i);
-        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, f, f2, f3, i);
-        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, f, f1, f3, i);
-        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, f, f1, f4, i);
-    }
-
-    private void renderVertex(
-            VertexConsumer buffer,
-            Quaternionf quaternion,
-            float x,
-            float y,
-            float z,
-            float xOffset,
-            float yOffset,
-            float quadSize,
-            float u,
-            float v,
-            int packedLight
-    ) {
-        Vector3f vector3f = new Vector3f(xOffset, yOffset, 0.0F).rotate(quaternion).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z())
-                .setUv(u, v)
-                .setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-                .setLight(packedLight);
+    protected float getU0() {
+        return this.mirrored ? this.spriteU1() : this.spriteU0();
     }
 
     @Override
-    public @NotNull ParticleRenderType getRenderType() {
-        return underwater ? ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT : ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    protected float getU1() {
+        return this.mirrored ? this.spriteU0() : this.spriteU1();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    protected float spriteU0() {
+        return super.getU0();
+    }
+
+    protected float spriteU1() {
+        return super.getU1();
+    }
+
+
     public static class Provider implements ParticleProvider<SimpleParticleType>, BloodEmitterParticle.VariantFactory {
         private final SpriteSet sprites;
         private final DecalType decalType;
@@ -183,7 +164,7 @@ public class BloodParticle extends TextureSheetParticle {
         @Override
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level,
                                        double x, double y, double z,
-                                       double dx, double dy, double dz) {
+                                       double dx, double dy, double dz, RandomSource random) {
             return new BloodParticle(level, x, y, z, this.sprites, this.decalType, this.decalDirection, ParticleRegistry.DEFAULT_BLOOD_COLOR, 1f, dx, dy, dz);
         }
 

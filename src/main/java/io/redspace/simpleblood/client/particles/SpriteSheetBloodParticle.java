@@ -1,6 +1,5 @@
 package io.redspace.simpleblood.client.particles;
 
-import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
@@ -10,10 +9,9 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.util.RandomSource;
 
-@OnlyIn(Dist.CLIENT)
+
 public class SpriteSheetBloodParticle extends BloodParticle {
     private final int frameCount;
     private static final int TICKS_PER_FRAME = 3;
@@ -45,20 +43,20 @@ public class SpriteSheetBloodParticle extends BloodParticle {
     }
 
     @Override
-    protected float getU0() {
-        float u0 = super.getU0();
-        float u1 = super.getU1();
+    protected float spriteU0() {
+        float u0 = super.spriteU0();
+        float u1 = super.spriteU1();
         return Mth.lerp(animPercent(0), u0, u1);
     }
 
     @Override
-    protected float getU1() {
-        float u0 = super.getU0();
-        float u1 = super.getU1();
+    protected float spriteU1() {
+        float u0 = super.spriteU0();
+        float u1 = super.spriteU1();
         return Mth.lerp(animPercent(1), u0, u1);
     }
 
-    @OnlyIn(Dist.CLIENT)
+
     public static class Provider implements ParticleProvider<SimpleParticleType>, BloodEmitterParticle.VariantFactory {
         private final SpriteSet sprites;
         private final int frameCount;
@@ -83,7 +81,8 @@ public class SpriteSheetBloodParticle extends BloodParticle {
                 double z,
                 double dx,
                 double dy,
-                double dz
+                double dz,
+                RandomSource random
         ) {
             return new SpriteSheetBloodParticle(
                     level, x, y, z, this.sprites, this.frameCount, this.textureSize, this.decalType, this.decalDirection,
@@ -98,6 +97,5 @@ public class SpriteSheetBloodParticle extends BloodParticle {
                     options.color(), options.scale(), dx, dy, dz
             );
         }
-
     }
 }

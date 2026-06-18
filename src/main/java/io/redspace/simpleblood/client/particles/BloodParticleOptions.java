@@ -33,18 +33,6 @@ public record BloodParticleOptions(int color, float scale, boolean isGraphic) im
             BloodParticleOptions::new
     );
 
-    public float red() {
-        return red(color);
-    }
-
-    public float green() {
-        return green(color);
-    }
-
-    public float blue() {
-        return blue(color);
-    }
-
     public static float red(int color) {
         return ((color >> 16) & 0xFF) / 255f;
     }

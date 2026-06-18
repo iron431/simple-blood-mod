@@ -24,12 +24,12 @@ public class ServerEvents {
         }
 
         for (BloodConfig config : BloodRegistry.getAll()) {
-            if (!entity.getType().is(config.entityTag())) {
+            if (!entity.getType().builtInRegistryHolder().is(config.entityTag())) {
                 continue;
             }
             AABB aabb = entity.isMultipartEntity() ? entity.getParts()[entity.getRandom().nextInt(entity.getParts().length)].getBoundingBox() : entity.getBoundingBox();
             Vec3 vec = aabb.getCenter();
-            float damage = event.getContainer().getNewDamage();
+            float damage = event.getNewDamage();
             if (damage <= config.minDamage()) {
                 return;
             }
@@ -40,7 +40,7 @@ public class ServerEvents {
 
             damage = Math.min(damage, 2000);
             int count = (int) (damage / config.minDamage())
-                    + level.random.nextIntBetweenInclusive(0, (int) (2 * (damage - config.minDamage()) / config.maxDamage()));
+                    + level.getRandom().nextIntBetweenInclusive(0, (int) (2 * (damage - config.minDamage()) / config.maxDamage()));
             double speed = config.scaledBaseSpeed() + count * config.scaledSpeedPerParticle();
             double bbShove = Math.max(aabb.getXsize() * 0.5 - 0.5, 0);
             double scale = (aabb.getXsize() + 2) / 3f;
@@ -62,6 +62,6 @@ public class ServerEvents {
     }
 
     public static void spawnParticles(Level level, ParticleOptions particle, double x, double y, double z, int count, double deltaX, double deltaY, double deltaZ, double speed, boolean force) {
-        level.getServer().getPlayerList().getPlayers().forEach(player -> ((ServerLevel) level).sendParticles(player, particle, force, x, y, z, count, deltaX, deltaY, deltaZ, speed));
+        ((ServerLevel) level).sendParticles(particle, force, force, x, y, z, count, deltaX, deltaY, deltaZ, speed);
     }
 }
