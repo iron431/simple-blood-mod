@@ -1,22 +1,15 @@
 package io.redspace.simpleblood.client.particles;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 
 public class BloodParticleType extends ParticleType<BloodParticleOptions> {
     public BloodParticleType(boolean overrideLimiter) {
-        super(overrideLimiter);
+        super(overrideLimiter, BloodParticleOptions.DESERIALIZER);
     }
 
     @Override
-    public MapCodec<BloodParticleOptions> codec() {
+    public Codec<BloodParticleOptions> codec() {
         return BloodParticleOptions.CODEC;
-    }
-
-    @Override
-    public StreamCodec<? super RegistryFriendlyByteBuf, BloodParticleOptions> streamCodec() {
-        return BloodParticleOptions.STREAM_CODEC;
     }
 }

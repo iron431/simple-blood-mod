@@ -1,7 +1,6 @@
 package io.redspace.simpleblood.client.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
@@ -10,16 +9,17 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import static net.minecraft.world.level.ClipContext.Block.*;
+import static net.minecraft.world.level.ClipContext.Block.VISUAL;
 import static net.minecraft.world.level.ClipContext.Fluid.NONE;
 
 public class BloodParticle extends TextureSheetParticle {
@@ -89,8 +89,8 @@ public class BloodParticle extends TextureSheetParticle {
         if (this.onGround) {
             if (alpha > 0.5) {
                 // prevent low-life underwater particles from emitting ground particle
-                Vec3 groundLevel = level.clip(new ClipContext(this.getPos().add(0, 0.6, 0), this.getPos(), VISUAL, NONE, CollisionContext.empty())).getLocation();
-                this.level.addParticle(new BloodGroundParticleOptions(this.color), true, groundLevel.x, groundLevel.y, groundLevel.z, this.getQuadSize(0.0F), 0.0D, 0.0D);
+                Vec3 groundLevel = level.clip(new ClipContext(this.getPos().add(0, 0.6, 0), this.getPos(), VISUAL, NONE, (net.minecraft.world.entity.Entity) null)).getLocation();
+                this.level.addParticle(new BloodGroundParticleOptions(this.color, this.getQuadSize(0.0F)), true, groundLevel.x, groundLevel.y, groundLevel.z, 0.0D, 0.0D, 0.0D);
             }
             this.remove();
         }
@@ -121,26 +121,45 @@ public class BloodParticle extends TextureSheetParticle {
                 return;
             }
         }
-        super.render(buffer, renderInfo, partialTicks);
+        renderRotatedQuad(buffer, renderInfo, partialTicks);
     }
 
-    @Override
-    protected void renderRotatedQuad(@NotNull VertexConsumer buffer, @NotNull Quaternionf quaternion, float x, float y, float z, float partialTicks) {
-        float f = this.getQuadSize(partialTicks);
-        float f1 = this.getU0();
-        float f2 = this.getU1();
-        float f3 = this.getV0();
-        float f4 = this.getV1();
-        if (this.mirrored) {
-            float tmp = f1;
-            f1 = f2;
-            f2 = tmp;
+    public void renderRotatedQuad(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
+        Vec3 vec3 = pRenderInfo.getPosition();
+        float f = (float) (Mth.lerp((double) pPartialTicks, this.xo, this.x) - vec3.x());
+        float f1 = (float) (Mth.lerp((double) pPartialTicks, this.yo, this.y) - vec3.y());
+        float f2 = (float) (Mth.lerp((double) pPartialTicks, this.zo, this.z) - vec3.z());
+        Quaternionf quaternionf;
+        if (this.roll == 0.0F) {
+            quaternionf = pRenderInfo.rotation();
+        } else {
+            quaternionf = new Quaternionf(pRenderInfo.rotation());
+            quaternionf.rotateZ(Mth.lerp(pPartialTicks, this.oRoll, this.roll));
         }
-        int i = this.getLightColor(partialTicks);
-        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, f, f2, f4, i);
-        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, f, f2, f3, i);
-        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, f, f1, f3, i);
-        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, f, f1, f4, i);
+        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        float f3 = this.getQuadSize(pPartialTicks);
+
+        for (int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            vector3f.rotate(quaternionf);
+            vector3f.mul(f3);
+            vector3f.add(f, f1, f2);
+        }
+
+        float f6 = this.getU0();
+        float f7 = this.getU1();
+        if (this.mirrored) {
+            float tmp = f6;
+            f6 = f7;
+            f7 = tmp;
+        }
+        float f4 = this.getV0();
+        float f5 = this.getV1();
+        int j = this.getLightColor(pPartialTicks);
+        pBuffer.vertex((double) avector3f[0].x(), (double) avector3f[0].y(), (double) avector3f[0].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex((double) avector3f[1].x(), (double) avector3f[1].y(), (double) avector3f[1].z()).uv(f7, f4).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex((double) avector3f[2].x(), (double) avector3f[2].y(), (double) avector3f[2].z()).uv(f6, f4).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex((double) avector3f[3].x(), (double) avector3f[3].y(), (double) avector3f[3].z()).uv(f6, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
     }
 
     private void renderVertex(
@@ -157,10 +176,11 @@ public class BloodParticle extends TextureSheetParticle {
             int packedLight
     ) {
         Vector3f vector3f = new Vector3f(xOffset, yOffset, 0.0F).rotate(quaternion).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z())
-                .setUv(u, v)
-                .setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-                .setLight(packedLight);
+        buffer.vertex(vector3f.x(), vector3f.y(), vector3f.z())
+                .uv(u, v)
+                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .uv2(packedLight)
+                .endVertex();
     }
 
     @Override

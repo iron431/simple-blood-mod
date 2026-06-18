@@ -1,13 +1,13 @@
 package io.redspace.simpleblood.registry;
 
+import io.redspace.simpleblood.IronsSimpleBloodMod;
 import io.redspace.simpleblood.client.particles.BloodGroundParticleType;
 import io.redspace.simpleblood.client.particles.BloodParticleType;
-import io.redspace.simpleblood.IronsSimpleBloodMod;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
 import org.joml.Vector3f;
 
 import java.util.function.Supplier;

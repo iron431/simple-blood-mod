@@ -8,15 +8,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber
+@Mod.EventBusSubscriber
 public class ServerEvents {
 
     @SubscribeEvent
-    public static void onFinalDamage(LivingDamageEvent.Pre event) {
+    public static void onFinalDamage(LivingDamageEvent event) {
         var entity = event.getEntity();
         var level = entity.level();
         if (level.isClientSide()) {
@@ -29,7 +29,7 @@ public class ServerEvents {
             }
             AABB aabb = entity.isMultipartEntity() ? entity.getParts()[entity.getRandom().nextInt(entity.getParts().length)].getBoundingBox() : entity.getBoundingBox();
             Vec3 vec = aabb.getCenter();
-            float damage = event.getContainer().getNewDamage();
+            float damage = event.getAmount();
             if (damage <= config.minDamage()) {
                 return;
             }

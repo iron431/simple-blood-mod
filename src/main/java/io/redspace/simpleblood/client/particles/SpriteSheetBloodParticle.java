@@ -1,6 +1,5 @@
 package io.redspace.simpleblood.client.particles;
 
-import io.redspace.simpleblood.client.ClientConfig;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
@@ -10,8 +9,8 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SpriteSheetBloodParticle extends BloodParticle {

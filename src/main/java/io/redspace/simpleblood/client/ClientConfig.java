@@ -1,18 +1,18 @@
 package io.redspace.simpleblood.client;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class ClientConfig {
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    public static final ModConfigSpec.DoubleValue GROUND_DECAL_DURATION_MULTIPLIER = BUILDER
+    public static final ForgeConfigSpec.DoubleValue GROUND_DECAL_DURATION_MULTIPLIER = BUILDER
             .comment("Multiplier for how long blood ground decals remain visible.")
             .defineInRange("groundDecalDurationMultiplier", 1.0, 0.1, 10.0);
 
-    public static final ModConfigSpec.BooleanValue ALLOW_GRAPHIC_PARTICLES = BUILDER
+    public static final ForgeConfigSpec.BooleanValue ALLOW_GRAPHIC_PARTICLES = BUILDER
             .comment("Whether blood particles marked as graphics are allowed to spawn.")
             .define("allowGraphicParticles", true);
 
-    public static final ModConfigSpec SPEC = BUILDER.build();
+    public static final ForgeConfigSpec SPEC = BUILDER.build();
 
 }

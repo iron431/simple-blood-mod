@@ -1,5 +1,6 @@
 package io.redspace.simpleblood.client;
 
+import io.redspace.simpleblood.IronsSimpleBloodMod;
 import io.redspace.simpleblood.client.particles.BloodEmitterParticle;
 import io.redspace.simpleblood.client.particles.BloodGroundParticle;
 import io.redspace.simpleblood.client.particles.BloodParticle;
@@ -7,15 +8,15 @@ import io.redspace.simpleblood.client.particles.SpriteSheetBloodParticle;
 import io.redspace.simpleblood.decal_behavior.DecalDirection;
 import io.redspace.simpleblood.decal_behavior.DecalType;
 import io.redspace.simpleblood.registry.ParticleRegistry;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = IronsSimpleBloodMod.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {

@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
@@ -15,13 +14,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.List;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 public class BloodGroundParticle extends TextureSheetParticle {
@@ -33,14 +35,14 @@ public class BloodGroundParticle extends TextureSheetParticle {
     private final int fadeoutTime;
     private final float yawRotation;
 
-    public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, int color, double scale, double yd, double zd) {
+    public BloodGroundParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet, int color, float scale, double xd, double yd, double zd) {
 
-        super(level, xCoord, yCoord, zCoord, 0.0D, yd, zd);
+        super(level, xCoord, yCoord, zCoord, xd, yd, zd);
 
-        this.xd = 0.0D;
+        this.xd = xd;
         this.yd = yd;
         this.zd = zd;
-        this.quadSize = (1.5f /*+ (float) Math.random() * 0.25f*/) * (float) scale;
+        this.quadSize = 1.5f * scale;
         this.yawRotation = this.random.nextInt(4) * DEGREES_90;
         this.fadeoutTime = 150;
         this.lifetime = (int) ((200 + fadeoutTime + (Math.random() * 150)) * ClientConfig.GROUND_DECAL_DURATION_MULTIPLIER.get());
@@ -73,6 +75,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
 
     private static final float SPLAT_IN_TIME = 1.5f;
     private static final float MAX_PROJECTION_HEIGHT = 2.0f;
+    private static final double HEIGHT_BRACKET_EPSILON = 1.0E-4D;
 
     private void renderRotatedParticle(VertexConsumer pConsumer, Camera camera, float partialTick, float quadSize, Consumer<Quaternionf> pQuaternion) {
         Vec3 cameraPos = camera.getPosition();
@@ -153,31 +156,23 @@ public class BloodGroundParticle extends TextureSheetParticle {
                 continue;
             }
 
-            VoxelShape shape = blockState.getShape(this.level, surfacePos);
+            VoxelShape shape = blockState.getShape(this.level, surfacePos, CollisionContext.empty());
             if (shape.isEmpty()) {
                 continue;
             }
 
-            AABB bounds = shape.bounds();
-            double surfaceTopY = surfacePos.getY() + bounds.maxY;
-            if (surfaceTopY > centerY + 0.25D) {
-                continue;
-            }
-            float drop = (float) (centerY - surfaceTopY);
-            float alphaMultiplier = Mth.lerp(Mth.clamp(drop / MAX_PROJECTION_HEIGHT, 0.0F, 1.0F), 1.0F, 0.25F);
             if (this.renderBlockDecal(
                     buffer,
                     camera,
                     surfacePos,
-                    bounds,
-                    (float) surfaceTopY,
+                    shape,
                     centerX,
+                    centerY,
                     centerZ,
                     worldExtentMin,
                     worldExtentMax,
                     quadSize,
-                    light,
-                    alphaMultiplier
+                    light
             )) {
                 return;
             }
@@ -188,21 +183,20 @@ public class BloodGroundParticle extends TextureSheetParticle {
             VertexConsumer buffer,
             Camera camera,
             BlockPos surfacePos,
-            AABB bounds,
-            float surfaceTopY,
+            VoxelShape shape,
             double centerX,
+            double centerY,
             double centerZ,
             Vec3 worldExtentMin,
             Vec3 worldExtentMax,
             float quadSize,
-            int light,
-            float alphaMultiplier
+            int light
     ) {
+        AABB bounds = shape.bounds();
         float minX = surfacePos.getX() + (float) bounds.minX;
         float maxX = surfacePos.getX() + (float) bounds.maxX;
         float minZ = surfacePos.getZ() + (float) bounds.minZ;
         float maxZ = surfacePos.getZ() + (float) bounds.maxZ;
-        float surfaceY = surfaceTopY + 0.005625F;
 
         if (minX < worldExtentMin.x) {
             minX = (float) worldExtentMin.x;
@@ -220,6 +214,68 @@ public class BloodGroundParticle extends TextureSheetParticle {
             return false;
         }
 
+        List<AABB> boxes = shape.toAabbs();
+        TreeSet<Double> heightBrackets = new TreeSet<>();
+        for (AABB box : boxes) {
+            heightBrackets.add(box.maxY);
+        }
+
+        boolean renderedAny = false;
+        for (double localTopY : heightBrackets) {
+            double worldTopY = surfacePos.getY() + localTopY;
+            if (worldTopY > centerY + 0.25D) {
+                continue;
+            }
+
+            for (AABB box : boxes) {
+                if (Math.abs(box.maxY - localTopY) > HEIGHT_BRACKET_EPSILON) {
+                    continue;
+                }
+
+                float planeMinX = Math.max(minX, surfacePos.getX() + (float) box.minX);
+                float planeMaxX = Math.min(maxX, surfacePos.getX() + (float) box.maxX);
+                float planeMinZ = Math.max(minZ, surfacePos.getZ() + (float) box.minZ);
+                float planeMaxZ = Math.min(maxZ, surfacePos.getZ() + (float) box.maxZ);
+                if (planeMinX >= planeMaxX || planeMinZ >= planeMaxZ) {
+                    continue;
+                }
+
+                float drop = (float) (centerY - worldTopY);
+                float alphaMultiplier = Mth.lerp(Mth.clamp(drop / MAX_PROJECTION_HEIGHT, 0.0F, 1.0F), 1.0F, 0.25F);
+                this.renderFlatDecalPlane(
+                        buffer,
+                        camera,
+                        planeMinX,
+                        planeMaxX,
+                        planeMinZ,
+                        planeMaxZ,
+                        (float) worldTopY + 0.005625F,
+                        centerX,
+                        centerZ,
+                        quadSize,
+                        light,
+                        alphaMultiplier
+                );
+                renderedAny = true;
+            }
+        }
+        return renderedAny;
+    }
+
+    private void renderFlatDecalPlane(
+            VertexConsumer buffer,
+            Camera camera,
+            float minX,
+            float maxX,
+            float minZ,
+            float maxZ,
+            float surfaceY,
+            double centerX,
+            double centerZ,
+            float quadSize,
+            int light,
+            float alphaMultiplier
+    ) {
         float u0 = this.getU0();
         float u1 = this.getU1();
         float v0 = this.getV0();
@@ -238,10 +294,10 @@ public class BloodGroundParticle extends TextureSheetParticle {
         for (Vec2 corner : corners) {
             float offsetX = corner.x - (float) centerX;
             float offsetZ = corner.y - (float) centerZ;
-            float localX = offsetX * cosYaw - offsetZ * sinYaw;
-            float localZ = offsetX * sinYaw + offsetZ * cosYaw;
-            float u = (localX / (2.0F * halfSize) + 0.5F) * (u1 - u0) + u0;
-            float v = (localZ / (2.0F * halfSize) + 0.5F) * (v1 - v0) + v0;
+            float uvLocalX = offsetX * cosYaw - offsetZ * sinYaw;
+            float uvLocalZ = offsetX * sinYaw + offsetZ * cosYaw;
+            float u = (uvLocalX / (2.0F * halfSize) + 0.5F) * (u1 - u0) + u0;
+            float v = (uvLocalZ / (2.0F * halfSize) + 0.5F) * (v1 - v0) + v0;
             this.makeCornerVertex(
                     buffer,
                     new Vector3f(
@@ -255,14 +311,14 @@ public class BloodGroundParticle extends TextureSheetParticle {
                     alphaMultiplier
             );
         }
-        return true;
     }
 
     private void makeCornerVertex(VertexConsumer pConsumer, Vector3f pVertex, float pU, float pV, int pPackedLight, float alphaMultiplier) {
-        pConsumer.addVertex(pVertex.x(), pVertex.y(), pVertex.z())
-                .setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaMultiplier)
-                .setUv(pU, pV)
-                .setLight(pPackedLight);
+        pConsumer.vertex(pVertex.x(), pVertex.y(), pVertex.z())
+                .uv(pU, pV)
+                .color(this.rCol, this.gCol, this.bCol, this.alpha * alphaMultiplier)
+                .uv2(pPackedLight)
+                .endVertex();
     }
 
     @NotNull
@@ -283,7 +339,7 @@ public class BloodGroundParticle extends TextureSheetParticle {
         public Particle createParticle(BloodGroundParticleOptions options, ClientLevel level,
                                        double x, double y, double z,
                                        double dx, double dy, double dz) {
-            return new BloodGroundParticle(level, x, y, z, this.sprites, options.color(), dx, dy, dz);
+            return new BloodGroundParticle(level, x, y, z, this.sprites, options.color(), options.scale(), dx, dy, dz);
         }
     }
 }

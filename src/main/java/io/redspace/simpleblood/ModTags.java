@@ -6,5 +6,5 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
 public class ModTags {
-    public static final TagKey<EntityType<?>> BLEEDS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(IronsSimpleBloodMod.MODID, "bleeds"));
+    public static final TagKey<EntityType<?>> BLEEDS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(IronsSimpleBloodMod.MODID, "bleeds"));
 }
