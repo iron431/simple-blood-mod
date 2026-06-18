@@ -13,6 +13,19 @@ If you love the mod and would like to help support its ongoing development, cons
 
 <a href="https://www.patreon.com/Iron431"><img src="https://shields.io/badge/-Patreon-f86754?style=for-the-badge&amp;logo=patreon&amp;logoColor=white" alt="" width="106" height="28" /></a>
 
+## Datadriven Blood Types
+Blood types are datadriven under the `data/<namespace>/blood_types/` directory. This controls what mobs emit particles, what color, and other settings. <br>
+For adding mobs to existing blood types, you simply need a datapack that expands the entity tag, or submit an issue requesting compat! <br>
+(The default entity tags are `#simpleblood:bleeds`, `#simpleblood:bleeds_ender`, `#simpleblood:bleeds_withered`, and `#simpleblood:slimes`)
+### Json Format
+`entity_tag`: entity tag for what entities emit this blood type (ie `#simpleblood:bleeds`) <br>
+`color`: `integer` or hex string color code for the blood tint color (ie `#FF00A0`) <br>
+`min_damage`: (Optional) `float` minimum amount of damage to proc a blood effect, and affects the base count of spawned particles (default: `3.0`) <br>
+`damage_intensity_multiplier`: (Optional) `float` multiplies the amount of extra particles spawned (default: `0.083`) <br>
+`base_speed`: (Optional) `float` base max speed of spawned particles (default: `9.0`) <br>
+`speed_per_particle`: (Optional) `float` additional max speed added per particle spawned (default: `0.5`) <br>
+`is_graphic`: (Optional) `boolean` marking whether this effect is considered "graphic", and hidden based on client's graphic settings (default: `true`) <br>
+
 ## License & Use
 (MIT)
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
