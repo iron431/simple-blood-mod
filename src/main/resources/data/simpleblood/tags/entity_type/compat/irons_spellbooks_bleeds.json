@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "required": false,
+      "id": "irons_spellbooks:fire_boss"
+    },
+    {
+      "required": false,
+      "id": "irons_spellbooks:pyromancer"
+    },
+    {
+      "required": false,
+      "id": "irons_spellbooks:cryomancer"
+    },
+    {
+      "required": false,
+      "id": "irons_spellbooks:priest"
+    },
+    {
+      "required": false,
+      "id": "irons_spellbooks:archevoker"
+    },
+    {
+      "required": false,
+      "id": "irons_spellbooks:ice_spider"
+    }
+  ]
+}

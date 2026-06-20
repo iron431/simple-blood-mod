@@ -25,31 +25,19 @@
     "minecraft:polar_bear",
     {
       "required": false,
-      "id": "irons_spellbooks:fire_boss"
+      "id": "#simpleblood:compat/irons_spellbooks_bleeds"
     },
     {
       "required": false,
-      "id": "irons_spellbooks:pyromancer"
+      "id": "#simpleblood:compat/guardvillagers_bleeds"
     },
     {
       "required": false,
-      "id": "irons_spellbooks:cryomancer"
+      "id": "#simpleblood:compat/iceandfire_bleeds"
     },
     {
       "required": false,
-      "id": "irons_spellbooks:priest"
-    },
-    {
-      "required": false,
-      "id": "irons_spellbooks:archevoker"
-    },
-    {
-      "required": false,
-      "id": "irons_spellbooks:ice_spider"
-    },
-    {
-      "id": "guardvillagers:guard",
-      "required": false
+      "id": "#simpleblood:compat/aether_bleeds"
     }
   ]
 }

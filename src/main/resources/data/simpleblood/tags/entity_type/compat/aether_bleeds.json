@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "required": false,
+      "id": "aether:cockatrice"
+    },
+    {
+      "required": false,
+      "id": "aether:valkyrie"
+    },
+    {
+      "required": false,
+      "id": "aether:mimic"
+    }
+  ]
+}
