@@ -1,0 +1,25 @@
+name: Compat Request
+description: Suggest default entity support for other mods here!
+labels: [enhancement]
+body:
+  - type: textarea
+    id: name
+    attributes:
+      label: Mod Name
+      description: Name of the mod
+    validations:
+      required: true
+  - type: textarea
+    id: link
+    attributes:
+      label: Mod Link
+      description: Curseforge, Github, or Modrinth link to the mod's page
+    validations:
+      required: true
+  - type: textarea
+    id: mobs
+    attributes:
+      label: Mobs
+      description: A clear list containing mobs which should bleed, what type (if special), and their id if you know (ie "minecraft:zombie")
+    validations:
+      required: true

@@ -1,0 +1,61 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "required": false,
+      "id": "iceandfire:fire_dragon"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:ice_dragon"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:lightning_dragon"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:amphithere"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:cockatrice"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:cyclops"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:troll"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:stymphalian_bird"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:siren"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:sea_serpent"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:hydra"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:hippogryph"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:hippocampus"
+    },
+    {
+      "required": false,
+      "id": "iceandfire:gorgon"
+    }
+  ]
+}

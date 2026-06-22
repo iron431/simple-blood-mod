@@ -1,0 +1,93 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:decaying_zombie"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:door_knight"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:barrel_zombie"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:zombie_bruiser"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:zombie_clown"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:zombie_fisherman"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:zombie_lumberjack"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:maggot"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:swarmer"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:corpse_fly"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:blood_gadfly"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:baby_spider"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:mother_spider"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:dire_hound_leader"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:dread_hound"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:corpse_fish"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:glutton_fish"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:nightmare_stalker"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:missioner"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:pumpkin_spirit"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:krampus"
+    },
+    {
+      "required": false,
+      "id": "born_in_chaos_v1:krampus_henchman"
+    }
+  ]
+}
