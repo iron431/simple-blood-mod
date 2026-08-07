@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    { "required": false, "id": "crittersandcompanions:ferret" },
+    { "required": false, "id": "crittersandcompanions:koi_fish" },
+    { "required": false, "id": "crittersandcompanions:otter" },
+    { "required": false, "id": "crittersandcompanions:red_panda" },
+    { "required": false, "id": "crittersandcompanions:shima_enaga" }
+  ]
+}
