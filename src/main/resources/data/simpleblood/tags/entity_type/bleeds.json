@@ -59,6 +59,14 @@
     {
       "required": false,
       "id": "#simpleblood:compat/undead_revamp2_bleeds"
+    },
+     {
+      "required": false,
+      "id": "#simpleblood:compat/fowlplay_bleeds"
+    },
+    {
+      "required": false,
+      "id": "#simpleblood:compat/crittersandcompanions_bleeds"
     }
   ]
 }
