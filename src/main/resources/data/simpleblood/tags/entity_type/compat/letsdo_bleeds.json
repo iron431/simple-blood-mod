@@ -1,13 +1,23 @@
 {
   "replace": false,
   "values": [
-    {
-      "required": false,
-      "id": "vinery:mule"
-    },
-    {
-      "required": false,
-      "id": "vinery:wandering_winemaker"
-    }
+    { "required": false, "id": "vinery:mule" },
+    { "required": false, "id": "vinery:wandering_winemaker" },
+    { "required": false, "id": "wildernature:beaver" },
+    { "required": false, "id": "wildernature:bison" },
+    { "required": false, "id": "wildernature:boar" },
+    { "required": false, "id": "wildernature:cassowary" },
+    { "required": false, "id": "wildernature:deer" },
+    { "required": false, "id": "wildernature:dog" },
+    { "required": false, "id": "wildernature:elephant" },
+    { "required": false, "id": "wildernature:giraffe" },
+    { "required": false, "id": "wildernature:hedgehog" },
+    { "required": false, "id": "wildernature:hippo" },
+    { "required": false, "id": "wildernature:lion" },
+    { "required": false, "id": "wildernature:minisheep" },
+    { "required": false, "id": "wildernature:raccoon" },
+    { "required": false, "id": "wildernature:squirrel" },
+    { "required": false, "id": "wildernature:swift_fox" },
+    { "required": false, "id": "wildernature:turkey" }
   ]
 }
