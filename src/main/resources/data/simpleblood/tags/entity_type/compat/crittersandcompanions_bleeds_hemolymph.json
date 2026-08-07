@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    { "required": false, "id": "crittersandcompanions:dragonfly" },
+    { "required": false, "id": "crittersandcompanions:dumbo_octopus" },
+    { "required": false, "id": "crittersandcompanions:jumping_spider" },
+    { "required": false, "id": "crittersandcompanions:ladybug" },
+    { "required": false, "id": "crittersandcompanions:leaf_insect" },
+    { "required": false, "id": "crittersandcompanions:roly_poly" },
+    { "required": false, "id": "crittersandcompanions:sea_bunny" },
+    { "required": false, "id": "crittersandcompanions:snail" },
+    { "required": false, "id": "crittersandcompanions:stag_beetle" },
+    { "required": false, "id": "crittersandcompanions:stick_bug" },
+    { "required": false, "id": "crittersandcompanions:weevil" }
+  ]
+}
