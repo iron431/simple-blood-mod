@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    { "required": false, "id": "wildernature:scorpion" },
+    { "required": false, "id": "wildernature:termite" }
+  ]
+}
