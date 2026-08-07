@@ -1,0 +1,9 @@
+{
+  "entity_tag": "#simpleblood:bleeds_hemolymph",
+  "color": "#D8CB3A",
+  "min_damage": 2.0,
+  "damage_intensity_multiplier": 0.083,
+  "base_speed": 9.0,
+  "speed_per_particle": 0.5,
+  "is_graphic": true
+}
