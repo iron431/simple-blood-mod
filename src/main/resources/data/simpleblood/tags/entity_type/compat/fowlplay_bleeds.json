@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    { "required": false, "id": "fowlplay:blue_jay" },
+    { "required": false, "id": "fowlplay:cardinal" },
+    { "required": false, "id": "fowlplay:chickadee" },
+    { "required": false, "id": "fowlplay:crow" },
+    { "required": false, "id": "fowlplay:duck" },
+    { "required": false, "id": "fowlplay:goose" },
+    { "required": false, "id": "fowlplay:gull" },
+    { "required": false, "id": "fowlplay:hawk" },
+    { "required": false, "id": "fowlplay:penguin" },
+    { "required": false, "id": "fowlplay:pigeon" },
+    { "required": false, "id": "fowlplay:raven" },
+    { "required": false, "id": "fowlplay:robin" },
+    { "required": false, "id": "fowlplay:sparrow" }
+  ]
+}
