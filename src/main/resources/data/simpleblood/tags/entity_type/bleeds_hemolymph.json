@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "required": false,
+      "id": "#simpleblood:compat/letsdo_bleeds_hemolymph"
+    },
+    {
+      "required": false,
+      "id": "#simpleblood:compat/crittersandcompanions_bleeds_hemolymph"
+    }
+  ]
+}
