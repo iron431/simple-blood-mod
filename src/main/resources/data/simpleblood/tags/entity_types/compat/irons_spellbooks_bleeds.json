@@ -24,6 +24,10 @@
     {
       "required": false,
       "id": "irons_spellbooks:ice_spider"
+    },
+    {
+      "required": false,
+      "id": "irons_artifice:illificer"
     }
   ]
 }
